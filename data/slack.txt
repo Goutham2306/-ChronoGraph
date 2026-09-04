@@ -1,0 +1,85 @@
+---
+ID: SLACK-001
+DATE: 2023-01-10
+CHANNEL: #cloud-strategy
+AUTHOR: Rohit Nair
+TEXT: Team, I want to open a discussion. Our AWS bill grew 40% last quarter and our data team keeps hitting Redshift concurrency limits. I think we should seriously evaluate migrating to GCP. BigQuery's separation of storage and compute would solve our analytics bottleneck.
+---
+ID: SLACK-002
+DATE: 2023-01-11
+CHANNEL: #cloud-strategy
+AUTHOR: Priya Menon
+TEXT: I'm against moving fast on this. We have 40+ services deeply integrated with AWS (IAM, S3 event triggers, Lambda). A migration like this is 6-12 months of risk for a cost problem we could solve by just right-sizing Redshift.
+---
+ID: SLACK-003
+DATE: 2023-01-12
+CHANNEL: #cloud-strategy
+AUTHOR: Rohit Nair
+TEXT: Fair, but this isn't only about cost. GCP's Kubernetes Engine (GKE) is more mature than EKS for our workloads, and BigQuery ML would let the data science team skip standing up a separate ML platform.
+---
+ID: SLACK-004
+DATE: 2023-01-18
+CHANNEL: #cloud-strategy
+AUTHOR: Suresh Pillai
+TEXT: I reviewed the numbers Rohit shared. Redshift compute is at 85% utilization during business hours and it's only going up. I lean towards agreeing a migration evaluation is worth doing, even if we don't commit yet.
+---
+ID: SLACK-005
+DATE: 2023-02-02
+CHANNEL: #cloud-strategy
+AUTHOR: Priya Menon
+TEXT: I still argue against a full migration. If we must do something, I'd rather see us pilot GCP BigQuery for analytics only and leave compute (EC2, Lambda) on AWS. Lower risk, still solves the immediate pain.
+---
+ID: SLACK-006
+DATE: 2023-02-14
+CHANNEL: #cloud-eng
+AUTHOR: Karthik Iyer
+TEXT: Opened PR-118 with a first pass at GCP Terraform modules for VPC + subnet setup, mirroring our existing AWS network topology. This is scoped to infra only, no service migration yet.
+---
+ID: SLACK-007
+DATE: 2023-02-15
+CHANNEL: #cloud-eng
+AUTHOR: Suresh Pillai
+TEXT: Reviewed PR-118. Structure looks solid, left comments about using GCP Cloud NAT instead of the manual NAT gateway approach Karthik used. Approving once that's addressed.
+---
+ID: SLACK-008
+DATE: 2023-03-02
+CHANNEL: #cloud-strategy
+AUTHOR: Rohit Nair
+TEXT: After the infra spike from Karthik and Suresh's review, I'm formally advocating we move forward: migrate analytics workloads from Redshift to BigQuery first, in Q2 2023, as a contained pilot with a clear rollback path.
+---
+ID: SLACK-009
+DATE: 2023-03-03
+CHANNEL: #cloud-strategy
+AUTHOR: Priya Menon
+TEXT: I can support the scoped BigQuery pilot Rohit is proposing. I still argue against migrating compute (EC2/Lambda) to GCP this year — that's a much bigger blast radius for uncertain gains.
+---
+ID: SLACK-010
+DATE: 2023-04-05
+CHANNEL: #cloud-eng
+AUTHOR: Meera Krishnan
+TEXT: Reporting an issue: the first BigQuery data load job (CLOUD-52) is failing on the events table due to a schema mismatch between our Redshift export and BigQuery's expected types. Filed the details in Jira.
+---
+ID: SLACK-011
+DATE: 2023-04-06
+CHANNEL: #cloud-eng
+AUTHOR: Karthik Iyer
+TEXT: Picked up CLOUD-52. Root cause is TIMESTAMP vs DATETIME handling between Redshift and BigQuery. Pushing a fix to the export schema mapping today.
+---
+ID: SLACK-012
+DATE: 2023-04-20
+CHANNEL: #cloud-strategy
+AUTHOR: Suresh Pillai
+TEXT: BigQuery pilot has been stable for two weeks post CLOUD-52 fix. Query latency on the main dashboards dropped from ~40s on Redshift to ~6s on BigQuery. I'm now advocating we expand GCP usage to the ML platform next.
+---
+ID: SLACK-013
+DATE: 2023-05-10
+CHANNEL: #cloud-strategy
+AUTHOR: Priya Menon
+TEXT: Given the pilot results, I'll withdraw my objection to expanding GCP usage for analytics and ML. I still think full compute migration (EC2/Lambda to GCE/Cloud Functions) needs its own risk review before we commit.
+---
+ID: SLACK-014
+DATE: 2023-06-01
+CHANNEL: #cloud-strategy
+AUTHOR: Rohit Nair
+TEXT: Summarizing where we landed: BigQuery migration for analytics is complete and successful. ML platform migration to GCP is approved and starting in July. Compute migration (EC2/Lambda) stays on AWS for now, per Priya's risk concerns — we'll revisit in 2024.
+---

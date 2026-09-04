@@ -1,0 +1,73 @@
+---
+ID: PR-118
+DATE: 2023-02-14
+AUTHOR: Karthik Iyer
+TYPE: Pull Request
+REPO: infra-terraform
+TITLE: Add GCP Terraform modules for VPC and subnet setup
+DESCRIPTION: Introduces initial GCP Terraform modules mirroring our existing AWS VPC topology (3 subnets, NAT gateway, firewall rules). Scoped to networking infrastructure only; no application workloads are migrated in this PR. Used GCP as the target provider and Terraform as the tooling.
+---
+ID: PR-118-REVIEW
+DATE: 2023-02-15
+AUTHOR: Suresh Pillai
+TYPE: Pull Request Review
+REPO: infra-terraform
+TITLE: Review of PR-118
+DESCRIPTION: Reviewed PR-118 from Karthik Iyer. Requested changes: replace the manually configured NAT gateway with GCP's managed Cloud NAT for lower operational overhead. Approved after Karthik pushed the update on 2023-02-16.
+---
+ID: COMMIT-a1f3
+DATE: 2023-02-16
+AUTHOR: Karthik Iyer
+TYPE: Commit
+REPO: infra-terraform
+TITLE: Replace manual NAT gateway with GCP Cloud NAT
+DESCRIPTION: Addresses review feedback from Suresh Pillai on PR-118. Committed code changing the NAT implementation to use GCP Cloud NAT.
+---
+ID: PR-124
+DATE: 2023-03-10
+AUTHOR: Karthik Iyer
+TYPE: Pull Request
+REPO: analytics-pipeline
+TITLE: BigQuery data export pipeline from Redshift
+DESCRIPTION: Implements the ETL job that exports tables from AWS Redshift and loads them into GCP BigQuery for the Q2 2023 analytics pilot approved by Rohit Nair. Used BigQuery and Redshift in this change.
+---
+ID: PR-124-REVIEW
+DATE: 2023-03-12
+AUTHOR: Suresh Pillai
+TYPE: Pull Request Review
+REPO: analytics-pipeline
+TITLE: Review of PR-124
+DESCRIPTION: Reviewed PR-124 from Karthik Iyer. Approved with a note to add schema validation before the next load, anticipating type mismatches between Redshift and BigQuery.
+---
+ID: COMMIT-b7c2
+DATE: 2023-04-06
+AUTHOR: Karthik Iyer
+TYPE: Commit
+REPO: analytics-pipeline
+TITLE: Fix TIMESTAMP vs DATETIME schema mismatch in BigQuery export
+DESCRIPTION: Fixes the schema mapping bug reported by Meera Krishnan in CLOUD-52, where Redshift TIMESTAMP columns were exported incompatibly with BigQuery DATETIME columns. Committed code resolving the events table load failure.
+---
+ID: PR-131
+DATE: 2023-04-18
+AUTHOR: Meera Krishnan
+TYPE: Pull Request
+REPO: analytics-pipeline
+TITLE: Add automated schema validation step to BigQuery export
+DESCRIPTION: Adds a pre-load validation step comparing Redshift and BigQuery schemas to catch mismatches like CLOUD-52 before they reach production. Used BigQuery in this change.
+---
+ID: PR-131-REVIEW
+DATE: 2023-04-19
+AUTHOR: Suresh Pillai
+TYPE: Pull Request Review
+REPO: analytics-pipeline
+TITLE: Review of PR-131
+DESCRIPTION: Reviewed PR-131 from Meera Krishnan. Approved, noting this closes the gap that caused CLOUD-52.
+---
+ID: PR-145
+DATE: 2023-07-05
+AUTHOR: Karthik Iyer
+TYPE: Pull Request
+REPO: ml-platform
+TITLE: Initial GCP Vertex AI project scaffolding
+DESCRIPTION: Sets up the initial Vertex AI project structure for the ML platform migration to GCP approved by Rohit Nair and Suresh Pillai in June 2023. Used Vertex AI and GCP in this change.
+---

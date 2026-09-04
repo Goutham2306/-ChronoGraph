@@ -1,0 +1,64 @@
+---
+ID: CLOUD-40
+DATE: 2023-01-15
+REPORTER: Rohit Nair
+TYPE: Epic
+TITLE: Evaluate AWS to GCP migration for analytics workloads
+DESCRIPTION: Umbrella epic to evaluate whether migrating analytics workloads from AWS Redshift to GCP BigQuery would resolve cost growth and concurrency limits. Reported due to sustained Redshift performance issues.
+---
+ID: CLOUD-41
+DATE: 2023-01-18
+REPORTER: Priya Menon
+TYPE: Task
+TITLE: Risk assessment for full AWS to GCP migration
+DESCRIPTION: Reported a task to document integration risk across 40+ AWS-dependent services (IAM, S3 triggers, Lambda) before any migration commitment is made. Argued that a phased, scoped approach is safer than a full migration.
+---
+ID: CLOUD-45
+DATE: 2023-02-20
+REPORTER: Karthik Iyer
+TYPE: Story
+TITLE: Stand up GCP networking infrastructure via Terraform
+DESCRIPTION: Reported the implementation task tracking PR-118 and PR-118-REVIEW: build GCP VPC, subnets, and Cloud NAT to mirror existing AWS network topology. Used Terraform and GCP for this work.
+---
+ID: CLOUD-48
+DATE: 2023-03-05
+REPORTER: Rohit Nair
+TYPE: Story
+TITLE: BigQuery analytics pilot - Q2 2023
+DESCRIPTION: Reported and advocated for the scoped BigQuery pilot migrating analytics workloads off Redshift in Q2 2023, with a defined rollback path, as agreed in #cloud-strategy on 2023-03-02.
+---
+ID: CLOUD-52
+DATE: 2023-04-05
+REPORTER: Meera Krishnan
+TYPE: Bug
+TITLE: BigQuery events table load failing - schema mismatch
+DESCRIPTION: Reported a bug where the first BigQuery data load job fails on the events table due to a TIMESTAMP vs DATETIME mismatch between the Redshift export and BigQuery's expected schema. Blocks the Q2 analytics pilot (CLOUD-48).
+---
+ID: CLOUD-52-RESOLUTION
+DATE: 2023-04-06
+REPORTER: Karthik Iyer
+TYPE: Bug Resolution
+TITLE: CLOUD-52 resolved - schema mapping fixed
+DESCRIPTION: Resolution note for CLOUD-52. Committed code (COMMIT-b7c2) fixing the TIMESTAMP/DATETIME mapping between Redshift and BigQuery. Events table now loads successfully.
+---
+ID: CLOUD-55
+DATE: 2023-04-18
+REPORTER: Meera Krishnan
+TYPE: Story
+TITLE: Add schema validation guardrail to BigQuery pipeline
+DESCRIPTION: Reported a follow-up story to prevent regressions like CLOUD-52 by adding automated schema validation (delivered in PR-131) before any future BigQuery load.
+---
+ID: CLOUD-60
+DATE: 2023-05-15
+REPORTER: Suresh Pillai
+TYPE: Epic
+TITLE: Expand GCP usage to ML platform (Vertex AI)
+DESCRIPTION: Reported the follow-on epic to migrate the ML platform to GCP Vertex AI, advocated after the BigQuery analytics pilot showed a query latency improvement from ~40s to ~6s.
+---
+ID: CLOUD-61
+DATE: 2023-06-01
+REPORTER: Rohit Nair
+TYPE: Task
+TITLE: Document decision to keep compute (EC2/Lambda) on AWS for 2023
+DESCRIPTION: Reported the decision record: full compute migration to GCP is deferred to 2024 per Priya Menon's risk assessment (CLOUD-41). Only analytics and ML platform move to GCP in 2023.
+---
