@@ -1,0 +1,15 @@
+llama-index-core>=0.11.0
+llama-index-llms-google-genai>=0.11.0
+llama-index-readers-file>=0.2.0
+google-genai>=2.0.0
+pydantic>=2.7.0
+python-dotenv>=1.0.1
+
+# --- Day 2 additions (LangChain / Neo4j / API) ---
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-google-genai>=4.0.0
+neo4j>=5.26.0
+fastapi>=0.115.0
+uvicorn>=0.32.0
+

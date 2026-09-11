@@ -1,0 +1,958 @@
+{
+  "nodes": [
+    {
+      "id": "Person:Rohit Nair",
+      "name": "Rohit Nair",
+      "type": "Person"
+    },
+    {
+      "id": "Technology:Redshift",
+      "name": "Redshift",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:GCP",
+      "name": "GCP",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:BigQuery",
+      "name": "BigQuery",
+      "type": "Technology"
+    },
+    {
+      "id": "Person:Priya Menon",
+      "name": "Priya Menon",
+      "type": "Person"
+    },
+    {
+      "id": "Technology:AWS",
+      "name": "AWS",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:Kubernetes Engine",
+      "name": "Kubernetes Engine",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:EKS",
+      "name": "EKS",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:BigQuery ML",
+      "name": "BigQuery ML",
+      "type": "Technology"
+    },
+    {
+      "id": "Person:Suresh Pillai",
+      "name": "Suresh Pillai",
+      "type": "Person"
+    },
+    {
+      "id": "Person:Rohit",
+      "name": "Rohit",
+      "type": "Person"
+    },
+    {
+      "id": "Technology:GCP BigQuery",
+      "name": "GCP BigQuery",
+      "type": "Technology"
+    },
+    {
+      "id": "Person:Karthik Iyer",
+      "name": "Karthik Iyer",
+      "type": "Person"
+    },
+    {
+      "id": "Technology:Terraform",
+      "name": "Terraform",
+      "type": "Technology"
+    },
+    {
+      "id": "Project:PR-118",
+      "name": "PR-118",
+      "type": "Project"
+    },
+    {
+      "id": "Technology:Cloud NAT",
+      "name": "Cloud NAT",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:GCP Cloud NAT",
+      "name": "GCP Cloud NAT",
+      "type": "Technology"
+    },
+    {
+      "id": "Person:Karthik",
+      "name": "Karthik",
+      "type": "Person"
+    },
+    {
+      "id": "Technology:NAT gateway",
+      "name": "NAT gateway",
+      "type": "Technology"
+    },
+    {
+      "id": "Project:infra spike",
+      "name": "infra spike",
+      "type": "Project"
+    },
+    {
+      "id": "Person:Suresh",
+      "name": "Suresh",
+      "type": "Person"
+    },
+    {
+      "id": "Project:Q2 2023 analytics pilot",
+      "name": "Q2 2023 analytics pilot",
+      "type": "Project"
+    },
+    {
+      "id": "Technology:AWS Redshift",
+      "name": "AWS Redshift",
+      "type": "Technology"
+    },
+    {
+      "id": "Project:PR-124",
+      "name": "PR-124",
+      "type": "Project"
+    },
+    {
+      "id": "Person:Meera Krishnan",
+      "name": "Meera Krishnan",
+      "type": "Person"
+    },
+    {
+      "id": "Project:CLOUD-52",
+      "name": "CLOUD-52",
+      "type": "Project"
+    },
+    {
+      "id": "Project:PR-131",
+      "name": "PR-131",
+      "type": "Project"
+    },
+    {
+      "id": "Technology:GCE",
+      "name": "GCE",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:Cloud Functions",
+      "name": "Cloud Functions",
+      "type": "Technology"
+    },
+    {
+      "id": "Technology:Vertex AI",
+      "name": "Vertex AI",
+      "type": "Technology"
+    },
+    {
+      "id": "Project:CLOUD-41",
+      "name": "CLOUD-41",
+      "type": "Project"
+    },
+    {
+      "id": "Person:Priya",
+      "name": "Priya",
+      "type": "Person"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:0",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-01-10",
+      "source": "slack",
+      "source_id": "SLACK-001",
+      "evidence": "our data team keeps hitting Redshift concurrency limits",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:1",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:GCP",
+      "timestamp": "2023-01-10",
+      "source": "slack",
+      "source_id": "SLACK-001",
+      "evidence": "I think we should seriously evaluate migrating to GCP",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:2",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-01-10",
+      "source": "slack",
+      "source_id": "SLACK-001",
+      "evidence": "BigQuery's separation of storage and compute would solve our analytics bottleneck",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:3",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:AWS",
+      "timestamp": "2023-01-11",
+      "source": "slack",
+      "source_id": "SLACK-002",
+      "evidence": "I'm against moving fast on this. We have 40+ services deeply integrated with AWS",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:4",
+      "subject": "Person:Priya Menon",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-01-11",
+      "source": "slack",
+      "source_id": "SLACK-002",
+      "evidence": "cost problem we could solve by just right-sizing Redshift",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:5",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:Kubernetes Engine",
+      "timestamp": "2023-01-12",
+      "source": "slack",
+      "source_id": "SLACK-003",
+      "evidence": "GCP's Kubernetes Engine (GKE) is more mature than EKS",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:6",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:EKS",
+      "timestamp": "2023-01-12",
+      "source": "slack",
+      "source_id": "SLACK-003",
+      "evidence": "GCP's Kubernetes Engine (GKE) is more mature than EKS",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:7",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:BigQuery ML",
+      "timestamp": "2023-01-12",
+      "source": "slack",
+      "source_id": "SLACK-003",
+      "evidence": "BigQuery ML would let the data science team skip standing up a separate ML platform",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:8",
+      "subject": "Person:Rohit Nair",
+      "predicate": "REPORTED",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-01-15",
+      "source": "jira",
+      "source_id": "CLOUD-40",
+      "evidence": "Reported due to sustained Redshift performance issues",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:9",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Person:Rohit",
+      "timestamp": "2023-01-18",
+      "source": "slack",
+      "source_id": "SLACK-004",
+      "evidence": "I reviewed the numbers Rohit shared",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:10",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-01-18",
+      "source": "slack",
+      "source_id": "SLACK-004",
+      "evidence": "I lean towards agreeing a migration evaluation is worth doing",
+      "confidence": 0.7
+    },
+    {
+      "id": "edge:11",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:GCP BigQuery",
+      "timestamp": "2023-02-02",
+      "source": "slack",
+      "source_id": "SLACK-005",
+      "evidence": "I still argue against a full migration.",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:12",
+      "subject": "Person:Priya Menon",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:GCP BigQuery",
+      "timestamp": "2023-02-02",
+      "source": "slack",
+      "source_id": "SLACK-005",
+      "evidence": "I'd rather see us pilot GCP BigQuery for analytics only",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:13",
+      "subject": "Person:Priya Menon",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:AWS",
+      "timestamp": "2023-02-02",
+      "source": "slack",
+      "source_id": "SLACK-005",
+      "evidence": "leave compute (EC2, Lambda) on AWS",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:14",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Technology:Terraform",
+      "timestamp": "2023-02-14",
+      "source": "github",
+      "source_id": "PR-118",
+      "evidence": "Add GCP Terraform modules for VPC and subnet setup",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:15",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP",
+      "timestamp": "2023-02-14",
+      "source": "github",
+      "source_id": "PR-118",
+      "evidence": "Used GCP as the target provider",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:16",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:Terraform",
+      "timestamp": "2023-02-14",
+      "source": "github",
+      "source_id": "PR-118",
+      "evidence": "Terraform as the tooling",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:17",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:PR-118",
+      "timestamp": "2023-02-14",
+      "source": "slack",
+      "source_id": "SLACK-006",
+      "evidence": "Opened PR-118 with a first pass at GCP Terraform modules",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:18",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP",
+      "timestamp": "2023-02-14",
+      "source": "slack",
+      "source_id": "SLACK-006",
+      "evidence": "GCP Terraform modules for VPC + subnet setup",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:19",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:Terraform",
+      "timestamp": "2023-02-14",
+      "source": "slack",
+      "source_id": "SLACK-006",
+      "evidence": "GCP Terraform modules for VPC + subnet setup",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:20",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Person:Karthik Iyer",
+      "timestamp": "2023-02-15",
+      "source": "github",
+      "source_id": "PR-118-REVIEW",
+      "evidence": "Reviewed PR-118 from Karthik Iyer",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:21",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:Cloud NAT",
+      "timestamp": "2023-02-15",
+      "source": "github",
+      "source_id": "PR-118-REVIEW",
+      "evidence": "replace the manually configured NAT gateway with GCP's managed Cloud NAT",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:22",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Technology:Cloud NAT",
+      "timestamp": "2023-02-15",
+      "source": "github",
+      "source_id": "PR-118-REVIEW",
+      "evidence": "Karthik pushed the update",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:23",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Project:PR-118",
+      "timestamp": "2023-02-15",
+      "source": "slack",
+      "source_id": "SLACK-007",
+      "evidence": "Reviewed PR-118",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:24",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:GCP Cloud NAT",
+      "timestamp": "2023-02-15",
+      "source": "slack",
+      "source_id": "SLACK-007",
+      "evidence": "left comments about using GCP Cloud NAT",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:25",
+      "subject": "Person:Karthik",
+      "predicate": "USED",
+      "object": "Technology:NAT gateway",
+      "timestamp": "2023-02-15",
+      "source": "slack",
+      "source_id": "SLACK-007",
+      "evidence": "manual NAT gateway approach Karthik used",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:26",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Project:PR-118",
+      "timestamp": "2023-02-16",
+      "source": "github",
+      "source_id": "COMMIT-a1f3",
+      "evidence": "review feedback from Suresh Pillai on PR-118",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:27",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:PR-118",
+      "timestamp": "2023-02-16",
+      "source": "github",
+      "source_id": "COMMIT-a1f3",
+      "evidence": "Committed code changing the NAT implementation",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:28",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP Cloud NAT",
+      "timestamp": "2023-02-16",
+      "source": "github",
+      "source_id": "COMMIT-a1f3",
+      "evidence": "changing the NAT implementation to use GCP Cloud NAT",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:29",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "REPORTED",
+      "object": "Project:PR-118",
+      "timestamp": "2023-02-20",
+      "source": "jira",
+      "source_id": "CLOUD-45",
+      "evidence": "Reported the implementation task tracking PR-118",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:30",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:Terraform",
+      "timestamp": "2023-02-20",
+      "source": "jira",
+      "source_id": "CLOUD-45",
+      "evidence": "Used Terraform and GCP for this work",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:31",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP",
+      "timestamp": "2023-02-20",
+      "source": "jira",
+      "source_id": "CLOUD-45",
+      "evidence": "Used Terraform and GCP for this work",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:32",
+      "subject": "Person:Karthik",
+      "predicate": "REVIEWED",
+      "object": "Project:infra spike",
+      "timestamp": "2023-03-02",
+      "source": "slack",
+      "source_id": "SLACK-008",
+      "evidence": "infra spike from Karthik and Suresh's review",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:33",
+      "subject": "Person:Suresh",
+      "predicate": "REVIEWED",
+      "object": "Project:infra spike",
+      "timestamp": "2023-03-02",
+      "source": "slack",
+      "source_id": "SLACK-008",
+      "evidence": "infra spike from Karthik and Suresh's review",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:34",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-03-02",
+      "source": "slack",
+      "source_id": "SLACK-008",
+      "evidence": "advocating we move forward: migrate analytics workloads from Redshift to BigQuery",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:35",
+      "subject": "Person:Priya Menon",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-03-03",
+      "source": "slack",
+      "source_id": "SLACK-009",
+      "evidence": "I can support the scoped BigQuery pilot",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:36",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:GCP",
+      "timestamp": "2023-03-03",
+      "source": "slack",
+      "source_id": "SLACK-009",
+      "evidence": "I still argue against migrating compute (EC2/Lambda) to GCP",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:37",
+      "subject": "Person:Rohit Nair",
+      "predicate": "REPORTED",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-03-05",
+      "source": "jira",
+      "source_id": "CLOUD-48",
+      "evidence": "Reported and advocated for the scoped BigQuery pilot",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:38",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-03-05",
+      "source": "jira",
+      "source_id": "CLOUD-48",
+      "evidence": "advocated for the scoped BigQuery pilot",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:39",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-03-05",
+      "source": "jira",
+      "source_id": "CLOUD-48",
+      "evidence": "migrating analytics workloads off Redshift",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:40",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:Q2 2023 analytics pilot",
+      "timestamp": "2023-03-10",
+      "source": "github",
+      "source_id": "PR-124",
+      "evidence": "Implements the ETL job that exports tables... for the Q2 2023 analytics pilot",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:41",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP BigQuery",
+      "timestamp": "2023-03-10",
+      "source": "github",
+      "source_id": "PR-124",
+      "evidence": "Used BigQuery and Redshift in this change",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:42",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:AWS Redshift",
+      "timestamp": "2023-03-10",
+      "source": "github",
+      "source_id": "PR-124",
+      "evidence": "Used BigQuery and Redshift in this change",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:43",
+      "subject": "Person:Rohit Nair",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Project:Q2 2023 analytics pilot",
+      "timestamp": "2023-03-10",
+      "source": "github",
+      "source_id": "PR-124",
+      "evidence": "Q2 2023 analytics pilot approved by Rohit Nair",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:44",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Project:PR-124",
+      "timestamp": "2023-03-12",
+      "source": "github",
+      "source_id": "PR-124-REVIEW",
+      "evidence": "Reviewed PR-124 from Karthik Iyer",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:45",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:PR-124",
+      "timestamp": "2023-03-12",
+      "source": "github",
+      "source_id": "PR-124-REVIEW",
+      "evidence": "PR-124 from Karthik Iyer",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:46",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "REPORTED",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-04-05",
+      "source": "jira",
+      "source_id": "CLOUD-52",
+      "evidence": "Reported a bug where the first BigQuery data load job fails",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:47",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "REPORTED",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-05",
+      "source": "slack",
+      "source_id": "SLACK-010",
+      "evidence": "Reporting an issue: the first BigQuery data load job (CLOUD-52) is failing",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:48",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "USED",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-04-05",
+      "source": "slack",
+      "source_id": "SLACK-010",
+      "evidence": "BigQuery data load job (CLOUD-52) is failing",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:49",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "USED",
+      "object": "Technology:Redshift",
+      "timestamp": "2023-04-05",
+      "source": "slack",
+      "source_id": "SLACK-010",
+      "evidence": "schema mismatch between our Redshift export and BigQuery's expected types",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:50",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-06",
+      "source": "jira",
+      "source_id": "CLOUD-52-RESOLUTION",
+      "evidence": "Committed code (COMMIT-b7c2) fixing the TIMESTAMP/DATETIME mapping",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:51",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "REPORTED",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-06",
+      "source": "github",
+      "source_id": "COMMIT-b7c2",
+      "evidence": "schema mapping bug reported by Meera Krishnan in CLOUD-52",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:52",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-04-06",
+      "source": "github",
+      "source_id": "COMMIT-b7c2",
+      "evidence": "Committed code resolving the events table load failure",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:53",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "REPORTED",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-06",
+      "source": "slack",
+      "source_id": "SLACK-011",
+      "evidence": "Picked up CLOUD-52",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:54",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-06",
+      "source": "slack",
+      "source_id": "SLACK-011",
+      "evidence": "Pushing a fix to the export schema mapping today",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:55",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "REPORTED",
+      "object": "Project:CLOUD-52",
+      "timestamp": "2023-04-18",
+      "source": "jira",
+      "source_id": "CLOUD-55",
+      "evidence": "Reported a follow-up story to prevent regressions like CLOUD-52",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:56",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:PR-131",
+      "timestamp": "2023-04-18",
+      "source": "jira",
+      "source_id": "CLOUD-55",
+      "evidence": "delivered in PR-131",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:57",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "COMMITTED_CODE",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-04-18",
+      "source": "github",
+      "source_id": "PR-131",
+      "evidence": "Adds a pre-load validation step comparing Redshift and BigQuery schemas",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:58",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "USED",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-04-18",
+      "source": "github",
+      "source_id": "PR-131",
+      "evidence": "Used BigQuery in this change.",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:59",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REVIEWED",
+      "object": "Project:PR-131",
+      "timestamp": "2023-04-19",
+      "source": "github",
+      "source_id": "PR-131-REVIEW",
+      "evidence": "Reviewed PR-131 from Meera Krishnan",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:60",
+      "subject": "Person:Meera Krishnan",
+      "predicate": "COMMITTED_CODE",
+      "object": "Project:PR-131",
+      "timestamp": "2023-04-19",
+      "source": "github",
+      "source_id": "PR-131-REVIEW",
+      "evidence": "PR-131 from Meera Krishnan",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:61",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:GCE",
+      "timestamp": "2023-05-10",
+      "source": "slack",
+      "source_id": "SLACK-013",
+      "evidence": "full compute migration (EC2/Lambda to GCE/Cloud Functions) needs its own risk review",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:62",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:Cloud Functions",
+      "timestamp": "2023-05-10",
+      "source": "slack",
+      "source_id": "SLACK-013",
+      "evidence": "full compute migration (EC2/Lambda to GCE/Cloud Functions) needs its own risk review",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:63",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "REPORTED",
+      "object": "Technology:Vertex AI",
+      "timestamp": "2023-05-15",
+      "source": "jira",
+      "source_id": "CLOUD-60",
+      "evidence": "Reported the follow-on epic to migrate the ML platform to GCP Vertex AI",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:64",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "ADVOCATED_FOR",
+      "object": "Technology:Vertex AI",
+      "timestamp": "2023-05-15",
+      "source": "jira",
+      "source_id": "CLOUD-60",
+      "evidence": "advocated after the BigQuery analytics pilot showed a query latency improvement",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:65",
+      "subject": "Person:Suresh Pillai",
+      "predicate": "USED",
+      "object": "Technology:BigQuery",
+      "timestamp": "2023-05-15",
+      "source": "jira",
+      "source_id": "CLOUD-60",
+      "evidence": "after the BigQuery analytics pilot",
+      "confidence": 0.7
+    },
+    {
+      "id": "edge:66",
+      "subject": "Person:Rohit Nair",
+      "predicate": "REPORTED",
+      "object": "Project:CLOUD-41",
+      "timestamp": "2023-06-01",
+      "source": "jira",
+      "source_id": "CLOUD-61",
+      "evidence": "Reported the decision record",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:67",
+      "subject": "Person:Priya Menon",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:GCP",
+      "timestamp": "2023-06-01",
+      "source": "jira",
+      "source_id": "CLOUD-61",
+      "evidence": "full compute migration to GCP is deferred to 2024 per Priya Menon's risk assessment",
+      "confidence": 0.8
+    },
+    {
+      "id": "edge:68",
+      "subject": "Person:Priya",
+      "predicate": "ARGUED_AGAINST",
+      "object": "Technology:AWS",
+      "timestamp": "2023-06-01",
+      "source": "slack",
+      "source_id": "SLACK-014",
+      "evidence": "Compute migration (EC2/Lambda) stays on AWS for now, per Priya's risk concerns",
+      "confidence": 0.9
+    },
+    {
+      "id": "edge:69",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "COMMITTED_CODE",
+      "object": "Technology:Vertex AI",
+      "timestamp": "2023-07-05",
+      "source": "github",
+      "source_id": "PR-145",
+      "evidence": "Sets up the initial Vertex AI project structure",
+      "confidence": 0.95
+    },
+    {
+      "id": "edge:70",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:GCP",
+      "timestamp": "2023-07-05",
+      "source": "github",
+      "source_id": "PR-145",
+      "evidence": "Used Vertex AI and GCP in this change",
+      "confidence": 1.0
+    },
+    {
+      "id": "edge:71",
+      "subject": "Person:Karthik Iyer",
+      "predicate": "USED",
+      "object": "Technology:Vertex AI",
+      "timestamp": "2023-07-05",
+      "source": "github",
+      "source_id": "PR-145",
+      "evidence": "Used Vertex AI and GCP in this change",
+      "confidence": 1.0
+    }
+  ]
+}
