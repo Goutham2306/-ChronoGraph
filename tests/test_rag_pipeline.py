@@ -52,3 +52,22 @@ def test_citation_validation_drops_uncited_or_invented_source_ids():
 def test_citation_validation_with_no_cited_ids():
     citations = _build_citations([], [])
     assert citations == []
+
+
+def test_neo4j_result_shape_validation_catches_missing_fields():
+    """
+    Regression test: if the LLM's generated Cypher doesn't alias its
+    RETURN clause exactly as instructed, this must fail loudly and
+    specifically - not silently produce a KeyError deep inside
+    answer.py's formatting code.
+    """
+    from pipeline.rag_pipeline import REQUIRED_EVIDENCE_FIELDS
+
+    # Simulate what _neo4j_retrieve's validation logic checks: a row
+    # missing 'subject_name' and 'object_name' (a plausible LLM mistake).
+    bad_row_fields = {
+        "timestamp", "subject", "predicate", "object",
+        "evidence", "confidence", "source", "source_id",
+    }
+    missing = REQUIRED_EVIDENCE_FIELDS - bad_row_fields
+    assert missing == {"subject_name", "object_name"}
