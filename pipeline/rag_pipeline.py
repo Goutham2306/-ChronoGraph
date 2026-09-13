@@ -2,17 +2,14 @@
 Day 2 orchestrator.
 
 question -> Cypher generation -> validation -> retrieval (Neo4j or mock) ->
-temporal sorting -> answer generation -> citation validation -> result
+temporal sorting -> Week 3 temporal reasoning -> answer generation ->
+citation validation -> result
 
 Mode is explicit and always reported (MODE: NEO4J or MODE: MOCK) - mock
 results are never presented as if they came from Neo4j, per spec.
 
-Mock mode does NOT execute the generated Cypher (there's no in-memory
-Cypher engine here) - it instead filters output/graph.json directly by the
-entities mentioned in the question, using the same entity-matching logic
-described to the LLM in the Cypher prompt (case-insensitive substring match
-on names). This is a clearly separate code path from Neo4j execution, not a
-disguised version of it.
+Mock mode does NOT execute the generated Cypher. It filters output/graph.json
+directly by the entities mentioned in the question.
 """
 
 from __future__ import annotations
@@ -29,11 +26,16 @@ from pydantic import BaseModel
 from pipeline.answer import INSUFFICIENT_EVIDENCE_MESSAGE, generate_answer
 from pipeline.cypher_generator import generate_cypher
 from pipeline.cypher_validator import validate_cypher
+from pipeline.temporal_executor import apply_temporal_reasoning
 from pipeline.temporal_retrieval import EvidenceRecord, sort_chronologically
 
 load_dotenv()
 
-GRAPH_JSON_PATH = Path(__file__).resolve().parent.parent / "output" / "graph.json"
+GRAPH_JSON_PATH = (
+    Path(__file__).resolve().parent.parent
+    / "output"
+    / "graph.json"
+)
 
 
 class Citation(BaseModel):
@@ -60,7 +62,8 @@ class PipelineResult(BaseModel):
 def _load_graph_json() -> dict:
     if not GRAPH_JSON_PATH.exists():
         raise FileNotFoundError(
-            f"{GRAPH_JSON_PATH} not found. Run `python run_day1.py` first."
+            f"{GRAPH_JSON_PATH} not found. "
+            "Run `python run_day1.py` first."
         )
 
     with open(GRAPH_JSON_PATH) as f:
@@ -69,23 +72,30 @@ def _load_graph_json() -> dict:
 
 def _extract_mentioned_terms(question: str) -> list[str]:
     """
-    Very simple term extraction for mock-mode filtering: pulls out
-    capitalized words/phrases and known technology-ish tokens from the
-    question. This is intentionally simple - mock mode exists as a fallback
-    demo path, not a reimplementation of NL understanding, and is clearly
-    documented as such.
+    Simple term extraction for mock-mode filtering.
     """
-    words = question.replace("?", "").replace(",", "").split()
-    candidates = [w for w in words if w[:1].isupper() and len(w) > 2]
+    words = (
+        question
+        .replace("?", "")
+        .replace(",", "")
+        .split()
+    )
+
+    candidates = [
+        w for w in words
+        if w[:1].isupper() and len(w) > 2
+    ]
+
     return candidates
 
 
-def _mock_retrieve(question: str) -> list[EvidenceRecord]:
+def _mock_retrieve(
+    question: str,
+) -> list[EvidenceRecord]:
     """
-    Filters output/graph.json edges by whether any capitalized term from
-    the question appears in the subject/object node names. Does NOT return
-    the entire graph for every question.
+    Filters graph.json edges using terms mentioned in the question.
     """
+
     graph = _load_graph_json()
 
     node_names = {
@@ -94,8 +104,8 @@ def _mock_retrieve(question: str) -> list[EvidenceRecord]:
     }
 
     terms = [
-        t.lower()
-        for t in _extract_mentioned_terms(question)
+        term.lower()
+        for term in _extract_mentioned_terms(question)
     ]
 
     if not terms:
@@ -104,12 +114,24 @@ def _mock_retrieve(question: str) -> list[EvidenceRecord]:
     matched: list[EvidenceRecord] = []
 
     for edge in graph["edges"]:
-        subject_name = node_names.get(edge["subject"], "")
-        object_name = node_names.get(edge["object"], "")
+        subject_name = node_names.get(
+            edge["subject"],
+            "",
+        )
 
-        haystack = f"{subject_name} {object_name}".lower()
+        object_name = node_names.get(
+            edge["object"],
+            "",
+        )
 
-        if any(term in haystack for term in terms):
+        haystack = (
+            f"{subject_name} {object_name}"
+        ).lower()
+
+        if any(
+            term in haystack
+            for term in terms
+        ):
             record: EvidenceRecord = {
                 **edge,
                 "subject_name": subject_name,
@@ -137,42 +159,62 @@ REQUIRED_EVIDENCE_FIELDS = {
 
 class Neo4jResultShapeError(Exception):
     """
-    Raised when the generated Cypher's RETURN clause didn't produce the
-    field aliases required by temporal_retrieval.py/answer.py.
+    Raised when the generated Cypher RETURN clause does not
+    produce the fields required by the pipeline.
     """
 
 
-def _neo4j_retrieve(cypher: str) -> list[EvidenceRecord]:
+def _neo4j_retrieve(
+    cypher: str,
+) -> list[EvidenceRecord]:
     """
-    Executes validated Cypher against a real Neo4j instance in a read-only
-    transaction.
+    Executes validated Cypher against Neo4j.
     """
+
     from neo4j import GraphDatabase
 
     uri = os.environ.get("NEO4J_URI")
     username = os.environ.get("NEO4J_USERNAME")
     password = os.environ.get("NEO4J_PASSWORD")
-    database = os.environ.get("NEO4J_DATABASE", "neo4j")
+    database = os.environ.get(
+        "NEO4J_DATABASE",
+        "neo4j",
+    )
 
-    if not all([uri, username, password]):
+    if not all(
+        [
+            uri,
+            username,
+            password,
+        ]
+    ):
         raise RuntimeError(
-            "Neo4j mode requires NEO4J_URI, NEO4J_USERNAME, "
-            "NEO4J_PASSWORD to be set in .env."
+            "Neo4j mode requires NEO4J_URI, "
+            "NEO4J_USERNAME, NEO4J_PASSWORD "
+            "to be set in .env."
         )
 
     driver = GraphDatabase.driver(
         uri,
-        auth=(username, password),
+        auth=(
+            username,
+            password,
+        ),
     )
 
     try:
         driver.verify_connectivity()
 
-        with driver.session(database=database) as session:
+        with driver.session(
+            database=database
+        ) as session:
 
             def _work(tx):
                 result = tx.run(cypher)
-                return [record.data() for record in result]
+                return [
+                    record.data()
+                    for record in result
+                ]
 
             rows = session.execute_read(_work)
 
@@ -180,20 +222,31 @@ def _neo4j_retrieve(cypher: str) -> list[EvidenceRecord]:
         driver.close()
 
     if rows:
-        actual_fields = set(rows[0].keys())
-        missing = REQUIRED_EVIDENCE_FIELDS - actual_fields
+        actual_fields = set(
+            rows[0].keys()
+        )
+
+        missing = (
+            REQUIRED_EVIDENCE_FIELDS
+            - actual_fields
+        )
 
         if missing:
             raise Neo4jResultShapeError(
-                f"Generated Cypher's RETURN clause is missing required "
-                f"field(s): {sorted(missing)}. Got fields: "
-                f"{sorted(actual_fields)}. Cypher was:\n{cypher}"
+                "Generated Cypher's RETURN clause "
+                f"is missing required field(s): "
+                f"{sorted(missing)}. "
+                f"Got fields: "
+                f"{sorted(actual_fields)}. "
+                f"Cypher was:\n{cypher}"
             )
 
     normalized: list[EvidenceRecord] = []
 
     for row in rows:
-        normalized.append(row)  # type: ignore[arg-type]
+        normalized.append(
+            row
+        )  # type: ignore[arg-type]
 
     return normalized
 
@@ -203,11 +256,10 @@ def _build_citations(
     cited_ids: list[str],
 ) -> list[Citation]:
     """
-    Only builds citations for source IDs that actually exist in the
-    retrieved evidence.
-
-    This prevents invented citations from reaching the user.
+    Build citations only from source IDs that actually
+    exist in retrieved evidence.
     """
+
     by_source_id = {
         e["source_id"]: e
         for e in evidence
@@ -219,10 +271,13 @@ def _build_citations(
     seen: set[str] = set()
 
     for source_id in cited_ids:
+
         if source_id in seen:
             continue
 
-        record = by_source_id.get(source_id)
+        record = by_source_id.get(
+            source_id
+        )
 
         if record is None:
             continue
@@ -240,7 +295,10 @@ def _build_citations(
     return citations
 
 
-def answer_question(question: str) -> PipelineResult:
+def answer_question(
+    question: str,
+) -> PipelineResult:
+
     start = time.time()
 
     use_mock = (
@@ -257,14 +315,17 @@ def answer_question(question: str) -> PipelineResult:
         else "neo4j"
     )
 
-    # ---------------------------------------------------------
-    # Cypher generation
-    # ---------------------------------------------------------
+    # =========================================================
+    # 1. Generate Cypher
+    # =========================================================
 
     try:
-        generated = generate_cypher(question)
+        generated = generate_cypher(
+            question
+        )
 
     except Exception as exc:  # noqa: BLE001
+
         return PipelineResult(
             mode=mode,
             question=question,
@@ -278,77 +339,131 @@ def answer_question(question: str) -> PipelineResult:
             timeline=[],
             answer=INSUFFICIENT_EVIDENCE_MESSAGE,
             citations=[],
-            latency_seconds=time.time() - start,
+            latency_seconds=(
+                time.time() - start
+            ),
             error="cypher_generation_failed",
         )
 
-    # ---------------------------------------------------------
-    # Cypher validation
-    # ---------------------------------------------------------
+    # =========================================================
+    # 2. Validate Cypher
+    # =========================================================
 
-    validation = validate_cypher(generated.cypher)
+    validation = validate_cypher(
+        generated.cypher
+    )
 
     evidence: list[EvidenceRecord] = []
     error = None
 
-    # ---------------------------------------------------------
-    # Retrieval
-    # ---------------------------------------------------------
+    # =========================================================
+    # 3. Retrieve evidence
+    # =========================================================
 
     if mode == "mock":
 
-        evidence = _mock_retrieve(question)
+        evidence = _mock_retrieve(
+            question
+        )
 
     else:
 
         if not validation.is_valid:
 
-            error = "cypher_validation_failed"
+            error = (
+                "cypher_validation_failed"
+            )
 
         else:
 
             try:
-                evidence = _neo4j_retrieve(generated.cypher)
+
+                evidence = _neo4j_retrieve(
+                    generated.cypher
+                )
 
             except Neo4jResultShapeError as exc:
-                error = f"cypher_result_shape_invalid: {exc}"
+
+                error = (
+                    "cypher_result_shape_invalid: "
+                    f"{exc}"
+                )
+
                 evidence = []
 
             except Exception as exc:  # noqa: BLE001
-                error = "neo4j_unavailable"
+
+                error = (
+                    "neo4j_unavailable"
+                )
+
                 evidence = []
 
-    # ---------------------------------------------------------
-    # Temporal sorting
-    # ---------------------------------------------------------
+    # =========================================================
+    # 4. Chronological sorting
+    # =========================================================
 
-    timeline = sort_chronologically(evidence)
+    timeline = sort_chronologically(
+        evidence
+    )
 
-    # ---------------------------------------------------------
-    # Answer generation + citations
-    # ---------------------------------------------------------
+    # =========================================================
+    # 5. WEEK 3 TEMPORAL REASONING
+    # =========================================================
+    #
+    # The executor:
+    #
+    # Question
+    #    ↓
+    # Temporal Router
+    #    ↓
+    # Temporal Reasoning
+    #    ↓
+    # Filtered / related evidence
+    #
+    # It never creates new evidence.
+    # =========================================================
+
+    timeline, temporal_route = (
+        apply_temporal_reasoning(
+            question,
+            timeline,
+        )
+    )
+
+    # =========================================================
+    # 6. Generate grounded answer
+    # =========================================================
 
     if not timeline:
 
-        answer_text = INSUFFICIENT_EVIDENCE_MESSAGE
+        answer_text = (
+            INSUFFICIENT_EVIDENCE_MESSAGE
+        )
+
         citations: list[Citation] = []
 
     else:
 
         try:
-            generated_answer = generate_answer(
-                question,
-                timeline,
+
+            generated_answer = (
+                generate_answer(
+                    question,
+                    timeline,
+                )
             )
 
-            answer_text = generated_answer.answer
+            answer_text = (
+                generated_answer.answer
+            )
 
-            # -------------------------------------------------
-            # Citation validation
-            #
-            # First collect ONLY source IDs that actually exist
+            # =================================================
+            # 7. Evidence-first citation validation
+            # =================================================
+
+            # Get only source IDs that really exist
             # in the retrieved evidence.
-            # -------------------------------------------------
 
             evidence_ids = list(
                 dict.fromkeys(
@@ -358,17 +473,23 @@ def answer_question(question: str) -> PipelineResult:
                 )
             )
 
-            # Keep only citation IDs returned by Gemini that
-            # actually exist in the retrieved evidence.
+            # Keep only citation IDs returned by Gemini
+            # that actually exist in the evidence.
+
             llm_cited_ids = [
                 source_id
-                for source_id in generated_answer.cited_source_ids
+                for source_id
+                in generated_answer.cited_source_ids
                 if source_id in evidence_ids
             ]
 
-            # If Gemini returns no valid citation IDs, fall back
-            # to the actual retrieved evidence.
-            cited_ids = llm_cited_ids or evidence_ids
+            # If Gemini returns no valid IDs, use the
+            # actual retrieved evidence IDs.
+
+            cited_ids = (
+                llm_cited_ids
+                or evidence_ids
+            )
 
             citations = _build_citations(
                 timeline,
@@ -377,7 +498,10 @@ def answer_question(question: str) -> PipelineResult:
 
         except Exception as exc:  # noqa: BLE001
 
-            answer_text = INSUFFICIENT_EVIDENCE_MESSAGE
+            answer_text = (
+                INSUFFICIENT_EVIDENCE_MESSAGE
+            )
+
             citations = []
 
             error = (
@@ -385,9 +509,9 @@ def answer_question(question: str) -> PipelineResult:
                 or f"answer_generation_failed: {exc}"
             )
 
-    # ---------------------------------------------------------
-    # Final result
-    # ---------------------------------------------------------
+    # =========================================================
+    # 8. Final result
+    # =========================================================
 
     return PipelineResult(
         mode=mode,
@@ -396,10 +520,18 @@ def answer_question(question: str) -> PipelineResult:
         cypher_reasoning=generated.reasoning,
         cypher_valid=validation.is_valid,
         cypher_validation_reasons=validation.reasons,
-        evidence=[dict(e) for e in timeline],
-        timeline=[dict(e) for e in timeline],
+        evidence=[
+            dict(e)
+            for e in timeline
+        ],
+        timeline=[
+            dict(e)
+            for e in timeline
+        ],
         answer=answer_text,
         citations=citations,
-        latency_seconds=time.time() - start,
+        latency_seconds=(
+            time.time() - start
+        ),
         error=error,
     )
