@@ -9,13 +9,17 @@ Mode is explicit and always reported (MODE: NEO4J or MODE: MOCK) - mock
 results are never presented as if they came from Neo4j, per spec.
 
 Mock mode does NOT execute the generated Cypher. It filters output/graph.json
-directly by the entities mentioned in the question.
+directly by entities mentioned in the question.
+
+For temporal-only questions, mock mode provides the graph evidence to the
+Week 3 temporal reasoning layer so that date filtering happens there.
 """
 
 from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from pathlib import Path
 from typing import Literal
@@ -29,7 +33,9 @@ from pipeline.cypher_validator import validate_cypher
 from pipeline.temporal_executor import apply_temporal_reasoning
 from pipeline.temporal_retrieval import EvidenceRecord, sort_chronologically
 
+
 load_dotenv()
+
 
 GRAPH_JSON_PATH = (
     Path(__file__).resolve().parent.parent
@@ -74,6 +80,7 @@ def _extract_mentioned_terms(question: str) -> list[str]:
     """
     Simple term extraction for mock-mode filtering.
     """
+
     words = (
         question
         .replace("?", "")
@@ -82,7 +89,8 @@ def _extract_mentioned_terms(question: str) -> list[str]:
     )
 
     candidates = [
-        w for w in words
+        w
+        for w in words
         if w[:1].isupper() and len(w) > 2
     ]
 
@@ -93,7 +101,24 @@ def _mock_retrieve(
     question: str,
 ) -> list[EvidenceRecord]:
     """
-    Filters graph.json edges using terms mentioned in the question.
+    Retrieve evidence from graph.json in mock mode.
+
+    Entity-specific questions are filtered using names mentioned
+    in the question.
+
+    Temporal-only questions contain dates such as:
+        - What happened after 2023-03-10?
+        - What happened before 2023-03-10?
+        - What happened between 2023-03-01 and 2023-03-20?
+
+    These questions should not be filtered using capitalized words such
+    as "What". Instead, the complete graph evidence is passed to the
+    Week 3 temporal reasoning layer.
+
+    Questions with neither an entity nor a temporal condition return
+    no evidence.
+
+    This function never creates new evidence.
     """
 
     graph = _load_graph_json()
@@ -108,6 +133,47 @@ def _mock_retrieve(
         for term in _extract_mentioned_terms(question)
     ]
 
+    # Detect temporal-only questions.
+    #
+    # A date plus a temporal keyword identifies a temporal query.
+    # This prevents words such as "What" from being treated as entities.
+    temporal_only = bool(
+        re.search(
+            r"\b\d{4}-\d{2}-\d{2}\b",
+            question,
+        )
+    ) and any(
+        keyword in question.lower()
+        for keyword in (
+            "before",
+            "after",
+            "between",
+            "later",
+            "earlier",
+            "history",
+        )
+    )
+
+    # Temporal-only questions need all graph events so that
+    # Week 3 temporal reasoning can perform the actual filtering.
+    if temporal_only:
+        return [
+            {
+                **edge,
+                "subject_name": node_names.get(
+                    edge["subject"],
+                    "",
+                ),
+                "object_name": node_names.get(
+                    edge["object"],
+                    "",
+                ),
+            }
+            for edge in graph["edges"]
+        ]
+
+    # If there is no recognizable entity and the question is not
+    # temporal, there is no evidence to retrieve.
     if not terms:
         return []
 
@@ -211,6 +277,7 @@ def _neo4j_retrieve(
 
             def _work(tx):
                 result = tx.run(cypher)
+
                 return [
                     record.data()
                     for record in result
@@ -411,8 +478,6 @@ def answer_question(
     # 5. WEEK 3 TEMPORAL REASONING
     # =========================================================
     #
-    # The executor:
-    #
     # Question
     #    ↓
     # Temporal Router
@@ -421,7 +486,7 @@ def answer_question(
     #    ↓
     # Filtered / related evidence
     #
-    # It never creates new evidence.
+    # The executor never creates new evidence.
     # =========================================================
 
     timeline, temporal_route = (
@@ -462,9 +527,6 @@ def answer_question(
             # 7. Evidence-first citation validation
             # =================================================
 
-            # Get only source IDs that really exist
-            # in the retrieved evidence.
-
             evidence_ids = list(
                 dict.fromkeys(
                     e["source_id"]
@@ -473,9 +535,6 @@ def answer_question(
                 )
             )
 
-            # Keep only citation IDs returned by Gemini
-            # that actually exist in the evidence.
-
             llm_cited_ids = [
                 source_id
                 for source_id
@@ -483,9 +542,8 @@ def answer_question(
                 if source_id in evidence_ids
             ]
 
-            # If Gemini returns no valid IDs, use the
-            # actual retrieved evidence IDs.
-
+            # If Gemini returns no valid IDs,
+            # use actual evidence IDs.
             cited_ids = (
                 llm_cited_ids
                 or evidence_ids
